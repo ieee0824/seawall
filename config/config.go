@@ -164,6 +164,8 @@ func (c *ClientOption) Args() []string {
 		"--disable-gpu",
 		"--log-level=3",
 		"--no-sandbox",
+		"--ignore-certificate-errors",
+		"--disable-application-cache",
 	}
 
 	ret = append(ret, c.UserAgent.Arg()...)
