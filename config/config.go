@@ -197,6 +197,7 @@ func (c *ClientOption) Args() []string {
 type Cmd string
 
 type Target struct {
+	Name          string         `yaml:"name"`
 	URL           string         `yaml:"url"`
 	ClientOptions []ClientOption `yaml:"client_options"`
 }
