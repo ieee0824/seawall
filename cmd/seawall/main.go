@@ -38,15 +38,19 @@ func main() {
 
 	for _, t := range c.Targets {
 		bins, err := client.ScreenShot(t)
-		fmt.Println(len(bins), err)
+		if err != nil {
+			continue
+		}
 
 		for i, v := range bins {
-			f, err := os.Create(fmt.Sprintf("%s/%v.png", *outDir, i))
+			writeFileName := fmt.Sprintf("%s/%v.png", *outDir, i)
+			f, err := os.Create(writeFileName)
 			if err != nil {
 				log.Fatalln(err)
 			}
 			f.Write(v)
 			f.Close()
+			fmt.Println(writeFileName)
 		}
 	}
 }
