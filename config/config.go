@@ -190,7 +190,6 @@ func (c *ClientOption) Args() []string {
 	} else {
 		ret = append(ret, c.WindowSize.Arg()...)
 	}
-	fmt.Println(ret)
 	return ret
 }
 

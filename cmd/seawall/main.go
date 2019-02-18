@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 
@@ -14,6 +15,7 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.Llongfile)
 	client, err := tester.NewClient()
 	if err != nil {
 		log.Fatalln(err)
@@ -24,7 +26,7 @@ func main() {
 	outDir := flag.String("o", "", "")
 	autoOpenMode := flag.Bool("a", false, "")
 	flag.Parse()
-	if err := os.Mkdir(*outDir, 0777); err != nil {
+	if err := os.Mkdir(*outDir, 0777); err != nil && !strings.Contains(err.Error(), "file exists") {
 		log.Fatalln(err)
 	}
 
