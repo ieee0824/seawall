@@ -10,6 +10,7 @@ import (
 
 	"github.com/ieee0824/seawall/config"
 	"github.com/ieee0824/seawall/tester"
+	"github.com/skratchdot/open-golang/open"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
 
 	confPath := flag.String("c", "", "")
 	outDir := flag.String("o", "", "")
+	autoOpenMode := flag.Bool("a", false, "")
 	flag.Parse()
 	if err := os.Mkdir(*outDir, 0777); err != nil {
 		log.Fatalln(err)
@@ -50,7 +52,14 @@ func main() {
 			}
 			f.Write(v)
 			f.Close()
-			fmt.Println(writeFileName)
+
+			if *autoOpenMode {
+				if err := open.Run(writeFileName); err != nil {
+					log.Println(err)
+				}
+			} else {
+				fmt.Println(writeFileName)
+			}
 		}
 	}
 }
