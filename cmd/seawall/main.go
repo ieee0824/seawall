@@ -77,5 +77,5 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(resultJson)
+	fmt.Println(string(resultJson))
 }
