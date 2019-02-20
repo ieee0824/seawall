@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -21,6 +22,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	defer client.Stop()
+	var result = map[string]interface{}{}
 
 	confPath := flag.String("c", "", "")
 	outDir := flag.String("o", "", "")
@@ -48,11 +50,17 @@ func main() {
 
 		for i, v := range bins {
 			writeFileName := fmt.Sprintf("%s/%v.png", *outDir, i)
+			result[writeFileName] = false
 			f, err := os.Create(writeFileName)
 			if err != nil {
-				log.Fatalln(err)
+				log.Println(err)
+				continue
 			}
-			f.Write(v)
+			if _, err := f.Write(v); err != nil {
+				f.Close()
+				log.Println(err)
+				continue
+			}
 			f.Close()
 
 			if *autoOpenMode {
@@ -60,8 +68,14 @@ func main() {
 					log.Println(err)
 				}
 			} else {
-				fmt.Println(writeFileName)
+				result[writeFileName] = true
 			}
 		}
 	}
+
+	resultJson, err := json.Marshal(result)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(resultJson)
 }
